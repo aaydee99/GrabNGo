@@ -1,4 +1,4 @@
-import { doc, setDoc, where, getDocs, collection, query } from 'firebase/firestore';
+import { collection, doc, setDoc, where, getDocs, query } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { FIREBASE_DB } from './db/firebase';
@@ -7,11 +7,11 @@ const AdminLog = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [adminNumber, setAdminNumber] = useState('');
-  const db = FIREBASE_DB;
+  const db = FIREBASE_DB
   const handleSignIn = async () => {
     // Implement your sign-in logic here
     if (email && password && adminNumber) {
-      const usersRef = collection(db, 'users');
+      const usersRef = collection(db, 'admin');
       const q = query(usersRef, where('userName', '==', email), where('password', '==', password), where('adminNumber', '==', adminNumber));
     
       try {
