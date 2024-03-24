@@ -1,23 +1,38 @@
+import { doc, setDoc, where, getDocs, collection, query } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { FIREBASE_DB } from './db/firebase';
 
 const AdminLog = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [adminNumber, setAdminNumber] = useState('');
-
-  const handleSignIn = () => {
+  const db = FIREBASE_DB;
+  const handleSignIn = async () => {
     // Implement your sign-in logic here
     if (email && password && adminNumber) {
-      navigation.navigate('AdminHome', { adminNumber });
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('userName', '==', email), where('password', '==', password), where('adminNumber', '==', adminNumber));
+    
+      try {
+        const querySnapshot = await getDocs(q)
+        if(querySnapshot.empty){
+          alert('Admin Not Found')
+        }else{
+          navigation.navigate('AdminHome', { email, password, adminNumber });
+        }
+      }catch (error){
+
+      }
+      
     } else {
       alert('Please enter valid email, password, and admin number.');
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(adminNumber)
-  },[
+  }, [
     adminNumber
   ])
 
@@ -89,7 +104,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: 'white',
   },
-  
+
   button: {
     width: 200,
     height: 40,

@@ -3,11 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 const AdminHome = ({ navigation, route }) => {
   const { adminNumber } = route.params;
-  useEffect(()=>{
-    console.log(adminNumber)
-  },[
-    adminNumber
-  ])
 
   const navigateToStockPage = () => {
     navigation.navigate('AdminStock');
