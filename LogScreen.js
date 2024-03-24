@@ -4,15 +4,28 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import AdminLog from './AdminLog'; // Import the AdminLog screen
 import { FIREBASE_DB } from './db/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const LogScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleSignIn = () => {
+  const db = FIREBASE_DB;
+  const handleSignIn = async() => {
     // Implement your sign-in logic here
     if (email && password) {
-      navigation.navigate('Home');
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('userName', '==', email), where('password', '==', password));
+    
+      try {
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          alert('No matching user found.');
+        } else {
+          navigation.navigate('Home', {email, password});
+        }
+      } catch (error) {
+        alert('Error fetching user data:', error);
+      }
     } else {
       alert('Please enter valid email and password.');
     }

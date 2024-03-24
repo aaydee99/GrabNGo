@@ -1,10 +1,14 @@
 // HomeScreen.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
+  const {email, password}  = route.params;
+  useEffect(()=>{
+    console.log(email, password);
+  },[])
   const navigateToOrderPage = () => {
-    navigation.navigate('Order');
+    navigation.navigate('Order', {email, password});
   };
 
   return (
@@ -16,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
           <Image source={require('../assets/Person1.png')} style={styles.personImage} />
           <View style={styles.userInfo}>
             <Text style={[styles.welcomeText, styles.whiteText]}>
-              <Text style={styles.boldText}>Email:</Text> Luis@hotmail.com
+              <Text style={styles.boldText}>Email:</Text> {email}
             </Text>
             <Text style={[styles.welcomeText, styles.whiteText]}>
               <Text style={styles.boldText}>Phone:</Text> 07752368116

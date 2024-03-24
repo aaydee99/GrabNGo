@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const MaceDerry = () => {
+const MaceDerry = ({route}) => {
+  const {email, password} = route.params
   const [selectedItems, setSelectedItems] = useState([]);
   const [error, setError] = useState(false);
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ const MaceDerry = () => {
   };
 
   const handleConfirmOrder = () => {
-    navigation.navigate('OrderConfirm', { selectedItems });
+    navigation.navigate('OrderConfirm', { selectedItems, email, password });
   };
 
   

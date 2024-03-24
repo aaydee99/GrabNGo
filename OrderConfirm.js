@@ -4,7 +4,7 @@ import { collection, getDocs, doc, updateDoc, setDoc, increment } from 'firebase
 import { FIREBASE_DB } from './db/firebase';
 
 const OrderConfirm = ({ navigation, route }) => {
-  const { selectedItems } = route.params;
+  const { selectedItems, email, password } = route.params;
   const [items, setItems] = useState([]);
   const [selectedPickupTime, setSelectedPickupTime] = useState(null);
   const db = FIREBASE_DB;
@@ -25,7 +25,9 @@ const OrderConfirm = ({ navigation, route }) => {
   ];
 
   useEffect(() => {
+    
     const fetchItems = async () => {
+      console.log(email, password)
       const querySnapshot = await getDocs(collection(db, 'stockItems'));
       const itemsList = querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -61,10 +63,10 @@ const OrderConfirm = ({ navigation, route }) => {
     });
 
     // Handle user data in Firestore (simplified example)
-    const userRef = doc(db, 'users', 'LuisPalmer'); // Use actual user ID or unique identifier
+    const userRef = doc(db, 'users', email); // Use actual user ID or unique identifier
     await setDoc(userRef, {
-      userName: 'LuisPalmer', // Use actual user email
-      password: 'Luis@hotmail.com', // It's not safe to store passwords in plain text
+      userName: email, // Use actual user email
+      password: password, // It's not safe to store passwords in plain text
       orderCount: increment(1),
     }, { merge: true });
 

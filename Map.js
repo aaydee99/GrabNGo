@@ -5,9 +5,9 @@ import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 
 
-const Map = () => {
+const Map = ({route}) => {
   const navigation = useNavigation();
-
+  const {email, password} = route.params;
   // Coordinates of BT47 4QY
   const initialRegion = {
     latitude: 55.0167,
@@ -49,7 +49,7 @@ const Map = () => {
   };
 
   const navigateToMaceDerry = () => {
-    navigation.navigate('MaceDerry'); // Assuming you've set up navigation properly
+    navigation.navigate('MaceDerry', {email, password}); // Assuming you've set up navigation properly
   };
 
   return (

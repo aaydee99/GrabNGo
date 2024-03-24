@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const OrderPage = () => {
+const OrderPage = ({route}) => {
+  const {email, password} = route.params;
   const navigation = useNavigation();
   const [postcode, setPostcode] = useState('');
 
   const handleGoPress = () => {
     if (postcode.trim() !== '') {
-      navigation.navigate('Map', { postcode }); 
+      navigation.navigate('Map', { postcode, email, password }); 
     } else {
       alert('Please enter a valid postcode');
     }
