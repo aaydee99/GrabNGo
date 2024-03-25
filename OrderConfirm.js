@@ -52,28 +52,33 @@ const OrderConfirm = ({ navigation, route }) => {
       alert('Please select a pickup time and ensure items are selected.');
       return;
     }
-
+  
     // Decrement stock for each selected item
     selectedItems.forEach(async selectedIndex => {
       const selectedItem = items.find(item => item.id === selectedIndex);
       if (!selectedItem) return; // If selectedItem is not found, skip
-
+      
       const itemRef = doc(db, 'stockItems', selectedItem.id);
       await updateDoc(itemRef, { stock: selectedItem.stock - 1 });
     });
-
+  
+    // Map selected item indexes to their names
+    const selectedItemNames = selectedItems.map(index => itemNames[index]);
+  
     // Handle user data in Firestore (simplified example)
     const userRef = doc(db, 'users', email); // Use actual user ID or unique identifier
     await setDoc(userRef, {
-      userName: email, // Use actual user email
+      userName: email, // Use actual user name
       password: password, // It's not safe to store passwords in plain text
       orderCount: increment(1),
+      selectedItemsNames: selectedItemNames, // Add the selected item names array
     }, { merge: true });
-
+  
     navigation.navigate('FinalOrder', {
       pickupTime: selectedPickupTime,
     });
   };
+  
 
   return (
     <View style={styles.container}>
